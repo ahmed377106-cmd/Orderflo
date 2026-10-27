@@ -1,0 +1,856 @@
+/* ==========================================================================
+   1. المتغيرات والتصميم الأساسي (Design Tokens & Theme)
+   ========================================================================== */
+:root {
+  --bg: #f3f6fc;
+  --bg-elev: #ffffff;
+  --bg-sub: #eaf0fa;
+  --tx: #091736;
+  --mu: #566789;
+  --bd: #dce5f4;
+  --pr: #0b5fd6;
+  --pr-hover: #094eb2;
+  --pr-soft: #e6f0ff;
+  --ac: #f5a600;
+  --ac-tx: #1f1400;
+  --ok: #0d9656;
+  --ok-soft: #e3f9ee;
+  --wn: #c97a00;
+  --wn-soft: #fff4df;
+  --er: #d92d3a;
+  --er-soft: #ffe8ea;
+  --sh-sm: 0 2px 10px rgba(9, 23, 54, 0.04);
+  --sh-md: 0 12px 32px rgba(9, 23, 54, 0.07);
+  --sh-lg: 0 20px 48px rgba(9, 23, 54, 0.14);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #050c1d;
+    --bg-elev: #0c1730;
+    --bg-sub: #132347;
+    --tx: #edf3ff;
+    --mu: #92a4c7;
+    --bd: #1c2e54;
+    --pr: #3282f6;
+    --pr-hover: #4e95ff;
+    --pr-soft: #132a52;
+    --ok: #34d37f;
+    --ok-soft: #0c3124;
+    --wn: #ffb84d;
+    --wn-soft: #36260b;
+    --er: #ff6b76;
+    --er-soft: #3a141d;
+    --sh-sm: none;
+    --sh-md: 0 12px 32px rgba(0, 0, 0, 0.35);
+    --sh-lg: 0 20px 50px rgba(0, 0, 0, 0.6);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #050c1d;
+  --bg-elev: #0c1730;
+  --bg-sub: #132347;
+  --tx: #edf3ff;
+  --mu: #92a4c7;
+  --bd: #1c2e54;
+  --pr: #3282f6;
+  --pr-hover: #4e95ff;
+  --pr-soft: #132a52;
+  --ok: #34d37f;
+  --ok-soft: #0c3124;
+  --wn: #ffb84d;
+  --wn-soft: #36260b;
+  --er: #ff6b76;
+  --er-soft: #3a141d;
+  --sh-sm: none;
+  --sh-md: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --sh-lg: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(70px + env(safe-area-inset-top, 0px));
+}
+
+body {
+  font: 15px/1.7 'Cairo', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--tx);
+  overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 80;
+  background: var(--bg-elev);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* ==========================================================================
+   2. العناصر المشتركة والأزرار (Components & Utilities)
+   ========================================================================== */
+.container {
+  max-width: 1180px;
+  margin: auto;
+  padding: 0 4.5%;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sp {
+  flex: 1;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 9px 18px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  background: var(--pr);
+  color: #fff;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn:hover {
+  background: var(--pr-hover);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-sm {
+  padding: 5px 12px;
+  font-size: 12.5px;
+  border-radius: 8px;
+}
+
+.btn-lg {
+  padding: 12px 26px;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+.btn-ac {
+  background: var(--ac);
+  color: var(--ac-tx);
+}
+
+.btn-ac:hover {
+  background: #ffb71b;
+}
+
+.btn-gh {
+  background: var(--bg-elev);
+  border-color: var(--bd);
+  color: var(--tx);
+}
+
+.btn-gh:hover {
+  background: var(--bg-sub);
+  border-color: var(--pr);
+}
+
+.btn-ok {
+  background: var(--ok);
+  color: #fff;
+}
+
+.btn-er {
+  background: var(--er-soft);
+  color: var(--er);
+  border-color: transparent;
+}
+
+.btn-er:hover {
+  background: var(--er);
+  color: #fff;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 21px;
+  letter-spacing: -0.3px;
+}
+
+.logo i {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0b5fd6, #28b5ff);
+  color: #fff;
+  font-style: normal;
+  font-size: 19px;
+  box-shadow: 0 4px 12px rgba(11, 95, 214, 0.35);
+}
+
+.card {
+  background: var(--bg-elev);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--sh-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  border-color: var(--pr);
+  box-shadow: var(--sh-md);
+}
+
+.grid-cards {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.grid-kpi {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+}
+
+.grid-2 {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1.4fr 1fr;
+}
+
+.grid-equal {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--bg-sub);
+  color: var(--mu);
+}
+
+.badge.ok { background: var(--ok-soft); color: var(--ok); }
+.badge.wn { background: var(--wn-soft); color: var(--wn); }
+.badge.er { background: var(--er-soft); color: var(--er); }
+.badge.pr { background: var(--pr-soft); color: var(--pr); }
+
+.mk-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 800;
+  flex: none;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 15px;
+  border-radius: 99px;
+  border: 1px solid var(--bd);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--bg-elev);
+  color: var(--mu);
+  transition: 0.15s ease;
+  user-select: none;
+}
+
+.pill:hover {
+  border-color: var(--pr);
+  color: var(--tx);
+}
+
+.pill.on {
+  background: var(--pr);
+  color: #fff;
+  border-color: var(--pr);
+}
+
+.switch {
+  width: 46px;
+  height: 25px;
+  border-radius: 99px;
+  background: var(--bd);
+  position: relative;
+  cursor: pointer;
+  flex: none;
+  transition: 0.2s;
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3.5px;
+  inset-inline-start: 3.5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.switch.on {
+  background: var(--ok);
+}
+
+.switch.on::after {
+  inset-inline-start: 24.5px;
+}
+
+.mu { color: var(--mu); }
+.ok-tx { color: var(--ok); }
+.wn-tx { color: var(--wn); }
+.er-tx { color: var(--er); }
+.pr-tx { color: var(--pr); }
+.ctr { text-align: center; }
+
+/* ==========================================================================
+   3. الجداول والنماذج (Tables & Forms)
+   ========================================================================== */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th {
+  color: var(--mu);
+  font-weight: 700;
+  text-align: start;
+  background: var(--bg-sub);
+  padding: 11px 12px;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+th:first-child { border-start-start-radius: 10px; }
+th:last-child { border-start-end-radius: 10px; }
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--bd);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: rgba(11, 95, 214, 0.03);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 13px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--bd);
+  background: var(--bg);
+  margin: 5px 0 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--pr);
+  box-shadow: 0 0 0 3px rgba(11, 95, 214, 0.12);
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--mu);
+  font-weight: 700;
+}
+
+.progress {
+  height: 8px;
+  border-radius: 99px;
+  background: var(--bg-sub);
+  overflow: hidden;
+}
+
+.progress > i {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.35s ease;
+}
+
+/* ==========================================================================
+   4. الصفحة الرئيسية التسويقية (Landing Page)
+   ========================================================================== */
+.navbar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 60;
+  background: rgba(243, 246, 252, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--bd);
+}
+
+:root[data-theme="dark"] .navbar {
+  background: rgba(5, 12, 29, 0.85);
+}
+
+.navbar .container {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  color: var(--mu);
+  font-weight: 700;
+  font-size: 14.5px;
+}
+
+.nav-links a {
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover {
+  color: var(--pr);
+}
+
+.hero {
+  background:
+    radial-gradient(800px 420px at 85% 10%, rgba(43, 123, 255, 0.32), transparent),
+    radial-gradient(600px 350px at 10% 90%, rgba(245, 166, 0, 0.18), transparent),
+    linear-gradient(160deg, #050d26, #0a245c 60%, #0d327a);
+  color: #fff;
+  padding: 68px 0 84px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero .container {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 40px;
+  align-items: center;
+}
+
+h1 {
+  font-size: clamp(29px, 4.6vw, 48px);
+  line-height: 1.32;
+  font-weight: 800;
+  margin: 12px 0;
+}
+
+h2 {
+  font-size: clamp(23px, 3.2vw, 33px);
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.lead {
+  color: #c8d7f5;
+  font-size: 17px;
+  margin: 14px 0 26px;
+  max-width: 600px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  color: #fff;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+}
+
+.glass-row {
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.sec {
+  padding: 68px 0;
+}
+
+.sec.alt {
+  background: var(--bg-elev);
+  border-block: 1px solid var(--bd);
+}
+
+.pulse-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+  70% { box-shadow: 0 0 0 9px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+.ai-glow {
+  background: linear-gradient(135deg, rgba(11, 95, 214, 0.08), rgba(245, 166, 0, 0.1));
+  border: 1px solid rgba(11, 95, 214, 0.35);
+  position: relative;
+}
+
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 11px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0b5fd6, #7c3aed);
+  color: #fff;
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   5. هيكل لوحة التحكم للتاجر (Dashboard App Shell)
+   ========================================================================== */
+.shell {
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  min-height: 100vh;
+  align-items: start;
+}
+
+.sidebar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  height: calc(100vh - env(safe-area-inset-top, 0px));
+  padding: 18px 14px;
+  background: var(--bg-elev);
+  border-inline-end: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 45;
+}
+
+.sidebar a.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 13px;
+  border-radius: 11px;
+  color: var(--mu);
+  font-weight: 700;
+  font-size: 14px;
+  transition: 0.15s;
+}
+
+.sidebar a.nav-item:hover {
+  background: var(--bg-sub);
+  color: var(--tx);
+}
+
+.sidebar a.nav-item.on {
+  background: var(--pr);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(11, 95, 214, 0.25);
+}
+
+.sidebar .nav-count {
+  margin-inline-start: auto;
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 99px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.sidebar a.nav-item.on .nav-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+main {
+  padding: 24px 3.5% 48px;
+  min-width: 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--bd);
+}
+
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.kpi-card b {
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   6. النوافذ المنبثقة والتنبيهات (Dialogs & Toast)
+   ========================================================================== */
+dialog {
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elev);
+  color: var(--tx);
+  padding: 24px;
+  width: min(500px, 94vw);
+  margin: auto;
+  box-shadow: var(--sh-lg);
+}
+
+dialog::backdrop {
+  background: rgba(5, 12, 29, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+.dlg-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--bd);
+}
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--bd);
+  background: var(--bg);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+#toast {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 88px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 100;
+}
+
+#toast span {
+  background: #091736;
+  color: #fff;
+  padding: 11px 22px;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: var(--sh-lg);
+  border: 1px solid rgba(255,255,255,0.15);
+  animation: slideUp 0.22s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(14px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+details {
+  padding: 16px 18px;
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  background: var(--bg-elev);
+  margin-bottom: 10px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* ==========================================================================
+   7. التجاوب مع الشاشات الصغيرة (Mobile Responsiveness)
+   ========================================================================== */
+@media (max-width: 900px) {
+  .hero .container, .grid-2, .grid-equal, .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .btn {
+    padding: 8px 13px;
+    font-size: 13.5px;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: auto 0 0 0;
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    z-index: 55;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--bd);
+    border-inline-end: none;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .sidebar a.nav-item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 6px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .sidebar .side-extra, .sidebar .logo, .sidebar .nav-count {
+    display: none;
+  }
+
+  main {
+    padding: 18px 4% 96px;
+  }
+}
+  
+
+/* ==========================================================================
+   إضافات النسخة المتصلة بالخادم: إمكانية الوصول وحالات الفراغ والتحميل
+   ========================================================================== */
+:where(a, button, summary, [role="button"], [role="switch"], input, select, textarea):focus-visible {
+  outline: 3px solid var(--pr);
+  outline-offset: 2px;
+}
+#app[aria-busy="true"] { opacity: .55; transition: opacity .15s; pointer-events: none; }
+.btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.empty { text-align: center; padding: 38px 20px; border-style: dashed; }
+.empty h3 { margin: 6px 0 4px; }
+.empty .mu { max-width: 440px; margin: 0 auto 14px; }
+.empty-icon { font-size: 34px; }
+.pager { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; padding: 14px 0 2px; font-size: 13px; }
+.pager-note { text-align: center; font-size: 12.5px; padding-top: 10px; }
+.demo-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  background: var(--wn-soft, rgba(245, 158, 11, .12)); color: var(--tx); border: 1px solid var(--wn, #f59e0b);
+  border-radius: var(--radius-sm, 12px); padding: 8px 14px; margin-bottom: 14px; font-size: 13.5px; font-weight: 700;
+}
+.steps { padding-inline-start: 22px; line-height: 2.3; }
+
+/* ----- إصلاحات الجوال: أعمدة الشبكة لا تتمدد مع الجداول العريضة، والشريط العلوي لا يفيض ----- */
+.shell > *, .grid-2 > *, .grid-equal > *, .grid-cards > *, .grid-kpi > *, .hero .container > * { min-width: 0; }
+@media (max-width: 900px) {
+  .hero .container, .grid-2, .grid-equal, .shell { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .navbar .container { height: auto; min-height: 64px; flex-wrap: wrap; gap: 8px; padding-block: 8px; }
+  .navbar .logo { font-size: 18px; gap: 7px; }
+  .navbar .logo i { width: 30px; height: 30px; }
+  .navbar .btn { padding: 7px 11px; font-size: 13px; }
+}
+@media (max-width: 480px) { .navbar [data-a="theme"] { display: none; } }

@@ -1,11 +1,110 @@
-<div align="center">
+# OmniArab — منصة إدارة متاجر أمازون مصر ونون وجوميا الموحدة
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+لوحة تحكم موحّدة لإدارة المتاجر على **أمازون مصر (Amazon.eg)** و**نون (Noon)** و**جوميا (Jumia)** بالجنيه المصري (`ج.م`):
+- مخزون موحّد يتحدث تلقائيًا عند تسجيل الطلبات أو المرتجعات.
+- حساب صافي الربح الحقيقي بعد عمولات المنصات وضريبة القيمة المضافة ١٤٪ وتكاليف الشحن والمرتجعات.
+- متابعة تحصيلات الدفع عند الاستلام (`COD`) مع شركات الشحن (بوسطة، أرامكس، مايلرز) وسحبها عبر `InstaPay`.
+- إصدار فواتير ضريبية مبسطة مزودة برمز `QR` وبوالص شحن مجمعة (`AWB`).
+- مستشار ذكاء اصطناعي مدعوم بـ `Gemini` لتحليل أداء المتجر، كتابة عناوين `SEO`، وفحص أسعار السوق المصري.
 
-  <h1>Built with AI Studio</h2>
+---
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## هيكل المجلدات الصحيح (مهم جدًا عند الرفع على GitHub)
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+يجب الحفاظ على هيكل المجلدات التالي كما هو (عدم رفع جميع الملفات في مجلد واحد مسطّح):
 
-</div>
+```text
+Orderf/
+├── server.js               # نقطة تشغيل الخادم الرئيسي
+├── package.json            # إعدادات المشروع وأوامر التشغيل
+├── .env.example            # نموذج متغيرات البيئة
+├── src/                    # كود الخادم الأساسي (Backend Core)
+│   ├── app.js              # تهيئة الخادم والمسارات والحماية
+│   ├── config.js           # إعدادات البيئة والجلسات
+│   ├── db.js               # قاعدة بيانات SQLite المدمجة والترحيلات
+│   ├── auth.js             # تشفير كلمات المرور والجلسات (HttpOnly / Bearer)
+│   ├── domain.js           # ثوابت المنصات والعمولات وشركات الشحن
+│   ├── http.js             # الموجه ومحدد معدل الطلبات وتقديم الملفات الساكنة
+│   ├── model.js            # تحويل بيانات قاعدة البيانات إلى JSON
+│   ├── pages.js            # قوالب طباعة الفاتورة الضريبية (QR) وبوالص الشحن (AWB)
+│   ├── seed.js             # بيانات الحساب التجريبي الكاملة (مبيعات سنة كاملة)
+│   ├── util.js             # دوال التحقق وتنسيق الأرقام والعملة وتصدير CSV
+│   ├── ai.js               # خدمة الاتصال بـ Gemini والقوالب البديلة
+│   └── routes/             # مسارات الواجهة البرمجية (API Routes)
+│       ├── auth.js         # /api/auth/*
+│       ├── catalog.js      # /api/products/*
+│       ├── orders.js       # /api/orders/*
+│       ├── finance.js      # /api/dashboard & /api/cod/*
+│       ├── account.js      # /api/bootstrap & /api/settings/* & /api/sync
+│       └── ai.js           # /api/ai/*
+├── public/                 # ملفات الواجهة الأمامية للمتصفح (Frontend)
+│   ├── index.html          # الصفحة الرئيسية
+│   ├── favicon.svg         # أيقونة الموقع
+│   ├── robots.txt
+│   ├── css/
+│   │   └── app.css         # التصميم الكامل (RTL + الوضع الفاتح والداكن)
+│   └── js/
+│       ├── app.js          # تطبيق الواجهة الأمامية التفاعلي
+│       └── print.js        # سكربت الطباعة التلقائية للفواتير والبوالص
+└── test/
+    └── api.test.js         # اختبارات التكامل الشاملة (10 اختبارات)
+```
+
+---
+
+## التشغيل على جهازك (Local Development)
+
+يتطلب المشروع **Node.js 22.5+** (لأنه يستخدم قاعدة بيانات `node:sqlite` المدمجة مباشرة في Node.js بدون الحاجة لتثبيت حزم خارجية معقدة).
+
+1. افتح موجه الأوامر (`Terminal` أو `PowerShell`) داخل مجلد المشروع.
+2. شغّل الخادم مباشرةً بالأمر:
+   ```bash
+   npm start
+   ```
+3. افتح المتصفح على الرابط:
+   ```text
+   http://localhost:3000
+   ```
+4. لتشغيل اختبارات التكامل والتأكد من سلامة كل شيء:
+   ```bash
+   npm test
+   ```
+
+---
+
+## كيفية رفع المشروع بالهيكل الصحيح على GitHub
+
+### الطريقة الأولى: باستخدام أوامر Git (الأفضل والأضمن)
+داخل مجلد المشروع بعد فك الضغط، نفّذ الأوامر التالية:
+
+```bash
+git init
+git add .
+git commit -m "Fix folder structure and restore full OmniArab frontend and backend"
+git branch -M main
+git remote add origin https://github.com/ahmed377106-cmd/Orderf.git
+git push -u origin main --force
+```
+
+### الطريقة الثانية: من متصفح الويب على موقع GitHub مباشرةً
+1. افتح مستودعك `https://github.com/ahmed377106-cmd/Orderf` واحذف الملفات المبعثرة القديمة من الجذر.
+2. اضغط على **Add file** ثم **Upload files**.
+3. **مهم جدًا**: اسحب **المجلدات الكاملة** (`src` و`public` و`test`) مع ملفَي `server.js` و`package.json` وأفلتها داخل مربع الرفع في GitHub (عند سحب المجلدات ككتلة واحدة يحتفظ GitHub بالمجلدات الفرعية `src/routes/` و`public/js/` ولا يدمجها).
+4. اضغط **Commit changes**.
+
+---
+
+## كيفية استضافة وتشغيل الموقع أونلاين (Deploy)
+
+بما أن التطبيق يحتوي على خادم Node.js وقاعدة بيانات SQLite، فإنه لا يعمل على `GitHub Pages` (لأن GitHub Pages للملفات الثابتة فقط بدون خادم). لتشغيله أونلاين مجانًا:
+
+1. **منصة Render.com أو Railway.app أو Fly.io**:
+   - اربط حسابك على GitHub واختر مستودع `Orderf`.
+   - نوع الخدمة: **Web Service** (بيئة `Node`).
+   - أمر التشغيل (**Start Command**):
+     ```bash
+     node --disable-warning=ExperimentalWarning server.js
+     ```
+   - متغيرات البيئة الاختيارية (**Environment Variables**):
+     - `GEMINI_API_KEY`: مفتاح Gemini لتفعيل الذكاء الاصطناعي الحي (يعمل التطبيق بدونه أيضًا عبر محرك القواعد والقوالب الفورية).
+     - `SESSION_SECRET`: نص عشوائي طويل (٣٢ حرفًا فأكثر) لتأمين الجلسات.
